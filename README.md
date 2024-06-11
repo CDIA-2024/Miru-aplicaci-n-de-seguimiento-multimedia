@@ -1,1 +1,1 @@
-# Miru-aplicaci-n-de-seguimiento-multimedia
+# Miru-aplicacion-de-seguimiento-multimedia
