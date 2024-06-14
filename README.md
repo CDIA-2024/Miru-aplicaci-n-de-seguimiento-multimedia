@@ -1,5 +1,5 @@
 # Miru-aplicacion-de-seguimiento-multimedia
-# MIRU
+
 
 ## **Descripción General**
 
