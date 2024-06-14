@@ -1,11 +1,20 @@
 use miru;
--- Consultamos a todos los usuarios mayores de edad
-select * from usuario where edad >= 18;
--- Consultamos los usuarios que el Email comeince con "pedro"
-select * from usuario where email like "pedro%";
--- Solamente mostramos los titulos de nuestros contenidos
-select titulo from contenido;
--- Consulta contenido de este milenio
-select * from contenido where anio_lanzamiento >= 2000;
--- Consulta de Generos para Contenidos
-select nombre from genero;
+-- Una sola tabla (mostrando todos los datos)
+select * from contenido;
+-- Una sola tabla (mostrando algunas columnas)
+select nombre, correo, edad from usuario;
+-- Una sola tabla con where
+select * from contenido where id_genero = 2;
+--  Una sola tabla con where utilizando between
+SELECT nombre, edad FROM usuario WHERE edad BETWEEN 25 AND 30;
+-- Una sola tabla con where utilizando limit
+SELECT * FROM contenido WHERE id_genero = 1 LIMIT 10;
+-- Más de 1 tabla con inner join
+SELECT contenido.titulo, genero.nombre AS nombre_genero
+FROM contenido
+INNER JOIN genero ON contenido.id_genero = genero.id_genero;
+-- Más de 1 tabla con inner join y con filtros
+SELECT contenido.titulo, genero.nombre AS nombre_genero
+FROM contenido
+INNER JOIN genero ON contenido.id_genero = genero.id_genero
+WHERE contenido.anio_lanzamiento > 2000 AND genero.nombre = 'Terror';
