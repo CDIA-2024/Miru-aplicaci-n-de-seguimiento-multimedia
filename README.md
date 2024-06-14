@@ -132,3 +132,16 @@ Define ciertas variables como palabras clave para caracteres especiales, para qu
 | Cesia Fiorella      | Cáceres Giménez | 96320512  | cesiaf.gimenez@gmail.com               | [Cesiaf](https://github.com/Cesiaf)       |
 | Álvaro Reinaldo     | Benicio         | 35821816  | alvarobenicio765@gmail.com             | [alvarobenicio](https://github.com/alvarobenicio) |
 | Walter Rodrigo      | Rojas           | 34587991  | rodrigo.rojas2.rr@gmail.com            | [Rodri1989](https://github.com/Rodri1989)     |
+
+
+
+
+#  PARA USAR MIRU:
+Descargar el archivo zip
+- Descomprimirlo y en un entorno de código, como Visual Studio Code, abrir la carpeta que contiene los archivos.
+- En cada uno de los módulos, cambiar los siguientes datos, personalizandolos según tu base de datos local.
+	host='',
+        user='',
+        password='',
+        database=''
+- Ejecutar el archivo index.py
