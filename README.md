@@ -126,7 +126,6 @@ Define ciertas variables como palabras clave para caracteres especiales, para qu
 
 | Nombre              | Apellido        | DNI       | Correo Electrónico                     | Perfil de Github                                 |
 |---------------------|-----------------|-----------|----------------------------------------|--------------------------------------------------|
-| Leonel              | Barbosa         | 29352409  | barbosaleonel@gmail.com                | [leonelisaac](https://github.com/leonelisaac) |
 | Yesica Esmeralda    | Ibañez          | 33693292  | yesicaesmeraldaibanez@gmail.com        | [Yesica-Ibanez](https://github.com/Yesica-Ibanez) |
 | Fernando Maximiliano| Pérez Elías     | 35966699  | maxiperez6@hotmail.com                 | [maxi09perez](https://github.com/maxi09perez) |
 | Cesia Fiorella      | Cáceres Giménez | 96320512  | cesiaf.gimenez@gmail.com               | [Cesiaf](https://github.com/Cesiaf)       |
