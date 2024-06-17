@@ -344,25 +344,69 @@ Esto creará un directorio `venv` que contendrá todos los paquetes necesarios p
 
 ### Configuración de la Base de Datos MySQL
 
-### 1. Importar el archivo `miru.sql`
+Ajusta estos valores según la configuración de tu servidor MySQL.
 
-El archivo `miru.sql` contiene las definiciones de las tablas y las restricciones necesarias para la base de datos que utilizará tu aplicación. Asegúrate de que tu servidor MySQL esté instalado y en ejecución antes de continuar.
+#### 5.2. Ejecución de la Aplicación Python
 
-1.  **Inicia sesión en MySQL**: Utiliza el cliente de línea de comandos de MySQL o una herramienta gráfica como MySQL Workbench para ejecutar comandos SQL.
+1.  **Ejecuta tu aplicación** desde la línea de comandos:
     
-2.  **Crea una base de datos**: Si aún no has creado la base de datos `miru`, puedes hacerlo manualmente o asegurarte de que el primer comando en `miru.sql` se encargue de esto.
+    `python main.py` 
     
-3.  **Importa `miru.sql`**:
-    
-    -   Abre una terminal o un símbolo del sistema.
-    -   Usa el comando `mysql` para importar el archivo SQL. Asumiendo que estás en el directorio donde se encuentra `miru.sql`:
-        
+2.  **Interactúa con la aplicación**: Si todo está configurado correctamente, deberías ver mensajes indicando una conexión exitosa a la base de datos. La aplicación debería funcionar según su diseño, utilizando la base de datos `miru` que has configurado.
 
-        `mysql -u tu_usuario -p miru < miru.sql` 
-        
-        -   Reemplaza `tu_usuario` con el usuario de MySQL que tiene permisos para crear la base de datos y tablas.
-        -   Te pedirá la contraseña de MySQL
-1.  **Verifica la importación**: Una vez importado correctamente, puedes verificar que las tablas se hayan creado ejecutando comandos SQL para mostrar la estructura de la base de datos.
+
+
+
+
+
+Para tener una base de datos completa utilizando los archivos `miru.sql` (estructura de la base de datos) y `datos.sql` (datos de la base de datos),  seguir los siguientes pasos:
+
+1.  **Crear la base de datos y la estructura**:
+    
+    -   Ejecutar el archivo `miru.sql` para crear la estructura de la base de datos.
+    -   Este archivo debería contener todas las definiciones de tablas y cualquier otra estructura necesaria (índices, claves foráneas, etc.).
+2.  **Insertar los datos**:
+    
+    -   Ejecutar el archivo `datos.sql` para insertar los datos en las tablas de la base de datos.
+    -   Este archivo contiene las instrucciones `INSERT INTO` para poblar cada tabla con datos iniciales.
+
+### Paso 1: Crear la base de datos y su estructura
+
+1.  Abrir la terminal o línea de comandos.
+    
+2.  Conéctate al servidor de MySQL:
+    
+    `mysql -u tu_usuario -p` 
+    
+    Reemplazar `tu_usuario` con el nombre de usuario de MySQL. Se pedirá que  se ingrese la contraseña.
+    
+3.  Crear la base de datos si aún no existe:
+          
+    `CREATE DATABASE miru;
+    USE miru;` 
+    
+4.  Ejecutar el archivo `miru.sql` para crear la estructura de la base de datos:
+
+    `source /ruta/a/tu/miru.sql;` 
+    
+    Asegúrate de reemplazar `/ruta/a/tu/miru.sql` con la ruta correcta al archivo `miru.sql` en tu sistema.
+    
+
+### Paso 2: Insertar los datos en la base de datos
+
+1.  Conectarse a tu servidor de MySQL (si no se ha hecho ya):
+    
+    `mysql -u tu_usuario -p` 
+    
+2.  Seleccionar la base de datos `miru`:
+    
+    `USE miru;` 
+    
+3.  Ejecutar el archivo `datos.sql` para insertar los datos:
+    
+    `source /ruta/a/tu/datos.sql;` 
+    
+    Asegurarse de reemplazar `/ruta/a/tu/datos.sql` con la ruta correcta al archivo `datos.sql` en el sistema.
     
 
 #### 2. Actualización de `Config.py`
