@@ -394,7 +394,7 @@ Para tener una base de datos completa utilizando los archivos `miru.sql` (estruc
 
 ### Paso 2: Insertar los datos en la base de datos
 
-1.  Conectarse a tu servidor de MySQL (si no se ha hecho ya):
+1.  Conectarse al servidor de MySQL (si no se ha hecho ya):
     
     `mysql -u tu_usuario -p` 
     
@@ -411,24 +411,25 @@ Para tener una base de datos completa utilizando los archivos `miru.sql` (estruc
 
 #### 2. Actualización de `Config.py`
 
-El archivo `Config.py` ya contiene la configuración para conectarse a la base de datos. Asegúrate de que los detalles de conexión coincidan con tu configuración de MySQL.
+El archivo `Config.py` ya contiene la configuración para conectarse a la base de datos. Asegurarse de que los detalles de conexión coincidan con la configuración de MySQL.
 
--   Abre `Config.py` y verifica los siguientes parámetros:
+-   Abrir `Config.py` y verificar los siguientes parámetros:
     
-    `host = 'localhost'      # Puede variar dependiendo de dónde está alojado tu servidor MySQL
-    database = 'miru'       # Nombre de la base de datos que has creado o importado
-    user = 'root'           # Usuario de MySQL con permisos adecuados
-    password = 'CIK:830_'   # Contraseña del usuario de MySQL`
+    `host = 'localhost'`  # Puede variar dependiendo de dónde está alojado el servidor MySQL
+    `database = 'miru'`  # Nombre de la base de datos importada
+    `user = 'root'` # Usuario de MySQL con permisos adecuados
+    `password = 'CIK:830_'`   # Contraseña del usuario de MySQL`
     
-Ajusta estos valores según la configuración de tu servidor MySQL.
+Ajustar estos valores según la configuración del servidor MySQL.
 
 #### 5.2. Ejecución de la Aplicación Python
 
-1.  **Ejecuta tu aplicación** desde la línea de comandos:
+1.  **Ejecuta la
+2.   aplicación** desde la línea de comandos:
     
     `python main.py` 
     
-2.  **Interactúa con la aplicación**: Si todo está configurado correctamente, deberías ver mensajes indicando una conexión exitosa a la base de datos. La aplicación debería funcionar según su diseño, utilizando la base de datos `miru` que has configurado.
+3.  **Interactúa con la aplicación**: Si todo está configurado correctamente, deberías ver mensajes indicando una conexión exitosa a la base de datos. La aplicación debería funcionar según su diseño, utilizando la base de datos `miru` que has configurado.
 
 
 ### Integrantes del Grupo:
