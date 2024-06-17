@@ -1,19 +1,11 @@
+# videojuegos.py
+
 import mysql.connector
 from mysql.connector import Error
+from .config import create_connection
 
 # Función para crear conexión a la base de datos
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='miru',
-            user='root',
-            password='maxi'
-        )
-        return connection
-    except Error as e:
-        print(f"Error al conectar a la base de datos: {e}")
-        return None
+create_connection()
 
 def mostrar_videojuegos():
     # Función para obtener y mostrar la lista de videojuegos
@@ -63,6 +55,20 @@ def agregar_videojuego(nombre_videojuego, nombre_genero, nombre_desarrollador, a
 
         # Iniciar transacción
         connection.start_transaction()
+        
+        # Verificar si el titulo ya existe
+        cursor.execute('SELECT * FROM contenido WHERE titulo = %s', (nombre_videojuego,))
+        nombre_videojuego = cursor.fetchall()
+        if nombre_videojuego is None:
+            # Si no existe, insertarlo
+            cursor.execute("INSERT INTO contenido (titulo) VALUES (%s)", (nombre_videojuego,))
+            connection.commit()
+            videojuego_id = cursor.lastrowid
+        else:
+            videojuego_id = nombre_videojuego[0]
+            print("El Título que desea agregar ya existe!")
+            for fila in nombre_videojuego:
+                print(f"ID: {fila[0]}, Título: {fila[1]}, Año: {fila[2]}")
 
         # Verificar si el género ya existe
         cursor.execute("SELECT id_genero FROM genero WHERE nombre = %s", (nombre_genero,))
@@ -98,14 +104,11 @@ def agregar_videojuego(nombre_videojuego, nombre_genero, nombre_desarrollador, a
         cursor.execute("INSERT INTO videojuego (id_contenido, id_desarrollador) VALUES (%s, %s)",
                        (contenido_id, desarrollador_id))
         connection.commit()
-
-        print("Videojuego agregado exitosamente.")
         return True
 
     except Error as e:
         # Revertir transacción en caso de error
         connection.rollback()
-        print(f"Error al agregar el videojuego: {e}")
         return False
 
     finally:

@@ -187,12 +187,17 @@ def menu_principal(usuario_validado, user_id):
             elif opt_menu ==3:
                 lista.crearLista(user_id)
         elif opcion == 6:
-            reseñas.agregar_reseña(user_id)
-            # Llamar al menú de reseñas
-            pass
+            print(mensaje_formateado(config.caracteres_especiales.GUION, config.colores.PURPURA))
+            print(" 1. Mis Reseñas") 
+            print(" 3. Nueva reseña")
+            print(mensaje_formateado(config.caracteres_especiales.GUION, config.colores.PURPURA))
+            opt_menu = int(input("Seleccione una acción: "))
+            if opt_menu == 1:
+                reseñas.obtener_reseñas(user_id)
+            elif opt_menu == 2:
+                reseñas.agregar_reseña(user_id)
         elif opcion == 7:
-            #Llamar al menú de agregar contenido
-            agregar_contenido.main_menu() 
+             agregar_contenido.main_menu(user_id)
         elif opcion == 8:
             # Llamar al menú de perfil
             perfil_usuario.mostrar_perfil(user_id)
@@ -205,7 +210,7 @@ def menu_principal(usuario_validado, user_id):
         else:
             print("Opción inválida, por favor elija una opción del menú")
 
-        time.sleep(8)
+        time.sleep(4)
 
 if __name__ == "__main__":
     while True:

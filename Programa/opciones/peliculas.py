@@ -1,19 +1,11 @@
+# peliculas.py
+
 import mysql.connector
 from mysql.connector import Error
-
+from prettytable import PrettyTable
+from .config import create_connection
 # Función para crear conexión a la base de datos
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='miru',
-            user='root',
-            password='maxi'
-        )
-        return connection
-    except Error as e:
-        print(f"Error al conectar a la base de datos: {e}")
-        return None
+create_connection()
 
 # Función para obtener y mostrar la lista de películas
 def mostrar_peliculas():
@@ -37,10 +29,14 @@ def mostrar_peliculas():
         # Obtener todos los resultados de la consulta
         peliculas = cursor.fetchall()
 
-        # Imprimir la lista de películas
-        for pelicula in peliculas:
-            print(f"ID: {pelicula[0]}, Título: {pelicula[1]}, Año: {pelicula[2]}, Director: {pelicula[3]}")
+        # Crear una tabla para mostrar los resultados
+        table = PrettyTable()
+        table.field_names = ["ID", "Título", "Año", "Director"]
 
+        for pelicula in peliculas:
+            table.add_row(pelicula)
+
+        print(table)
         return True
 
     except Error as e:
@@ -51,10 +47,8 @@ def mostrar_peliculas():
         cursor.close()
         connection.close()
 
-
-# Función para agregar una pelicula
+# Función para agregar una película
 def agregar_pelicula(titulo, genero, director, anio):
-    # Función para agregar una película a la base de datos
     connection = create_connection()
 
     if connection is None:
@@ -65,7 +59,20 @@ def agregar_pelicula(titulo, genero, director, anio):
 
         # Iniciar transacción
         connection.start_transaction()
-
+        
+        # Verificar si el titulo ya existe
+        cursor.execute('SELECT * FROM contenido WHERE titulo = %s', (titulo,))
+        titulo= cursor.fetchall()
+        if titulo is None:
+            # Si no existe, insertarlo
+            cursor.execute("INSERT INTO contenido (titulo) VALUES (%s)", (titulo,))
+            connection.commit()
+            añadir_pelicula_data_id = cursor.lastrowid
+        else:
+            añadir_pelicula_data_id = titulo[0]
+            print("El Título que desea agregar ya existe!")
+            for fila in titulo:
+                print(f"ID: {fila[0]}, Título: {fila[1]}, Año: {fila[2]}")
         # Verificar si el género ya existe en la base de datos
         cursor.execute("SELECT id_genero FROM genero WHERE nombre = %s", (genero,))
         genero_existente = cursor.fetchone()
@@ -73,6 +80,7 @@ def agregar_pelicula(titulo, genero, director, anio):
         if not genero_existente:
             # Si el género no existe, insertarlo en la tabla de géneros
             cursor.execute("INSERT INTO genero (nombre) VALUES (%s)", (genero,))
+            connection.commit()  # Confirmar la inserción
             genero_id = cursor.lastrowid
         else:
             genero_id = genero_existente[0]
@@ -80,6 +88,7 @@ def agregar_pelicula(titulo, genero, director, anio):
         # Insertar la película en la tabla de contenido
         cursor.execute("INSERT INTO contenido (titulo, id_genero, anio_lanzamiento) VALUES (%s, %s, %s)",
                        (titulo, genero_id, anio))
+        connection.commit()  # Confirmar la inserción
         contenido_id = cursor.lastrowid
 
         # Verificar si el director ya existe en la base de datos
@@ -89,6 +98,7 @@ def agregar_pelicula(titulo, genero, director, anio):
         if not director_existente:
             # Si el director no existe, insertarlo en la tabla de directores
             cursor.execute("INSERT INTO director (nombre) VALUES (%s)", (director,))
+            connection.commit()  # Confirmar la inserción
             director_id = cursor.lastrowid
         else:
             director_id = director_existente[0]
@@ -96,17 +106,13 @@ def agregar_pelicula(titulo, genero, director, anio):
         # Insertar la película en la tabla de películas
         cursor.execute("INSERT INTO pelicula (id_contenido, id_director) VALUES (%s, %s)",
                        (contenido_id, director_id))
+        connection.commit()  # Confirmar la inserción
 
-        # Confirmar la transacción
-        connection.commit()
-
-        print("Película agregada exitosamente.")
         return True
 
     except Error as e:
         # Revertir la transacción en caso de error
         connection.rollback()
-        print(f"Error al agregar la película: {e}")
         return False
 
     finally:
@@ -124,3 +130,4 @@ def añadir_pelicula_data():
         print("Proceso completado.")
     else:
         print("Error en el proceso.")
+

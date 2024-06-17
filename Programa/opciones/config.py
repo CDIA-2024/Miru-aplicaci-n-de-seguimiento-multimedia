@@ -10,10 +10,9 @@ def create_connection():
             host='localhost',
             database='miru',
             user='root',
-            password='maxi'
+            password='CIK:830_'
         )
         if connection.is_connected():
-            print("Conexión exitosa")
             return connection
     except Error as e:
         print(f"Error al conectar a la base de datos: {e}")

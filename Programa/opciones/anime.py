@@ -1,20 +1,11 @@
+# anime.py
 import mysql.connector
 from mysql.connector import Error
+from prettytable import PrettyTable
+from .config import create_connection
 
 # Función para crear conexión a la base de datos
-def create_connection():
-    try:
-        connection = mysql.connector.connect(
-            host='localhost',
-            database='miru',
-            user='root',
-            password='maxi'
-        )
-        return connection
-    except Error as e:
-        print(f"Error al conectar a la base de datos: {e}")
-        return None
-
+create_connection()
 
 # Función para obtener y mostrar la lista de animes
 def mostrar_animes():
@@ -40,10 +31,14 @@ def mostrar_animes():
         # Obtener todos los resultados de la consulta
         animes = cursor.fetchall()
 
-        # Imprimir la lista de animes
-        for anime in animes:
-            print(f"ID: {anime[0]}, Título: {anime[1]}, Año: {anime[2]}, Género: {anime[3]}, Estudio: {anime[4]}, Estado: {anime[5]}")
+        # Crear una tabla para mostrar los resultados
+        table = PrettyTable()
+        table.field_names = ["ID", "Título", "Año", "Género", "Estudio", "Estado"]
 
+        for anime in animes:
+            table.add_row(anime)
+
+        print(table)
         return True
 
     except Error as e:
@@ -66,7 +61,20 @@ def agregar_anime(nombre_anime, nombre_genero, nombre_estudio, anio_lanzamiento,
 
         # Iniciar transacción
         connection.start_transaction()
-
+        
+        # Verificar si el titulo ya existe
+        cursor.execute('SELECT * FROM contenido WHERE titulo = %s', (nombre_anime,))
+        nombre_anime = cursor.fetchall()
+        if nombre_anime is None:
+            # Si no existe, insertarlo
+            cursor.execute("INSERT INTO contenido (titulo) VALUES (%s)", (nombre_anime,))
+            connection.commit()
+            anime_id = cursor.lastrowid
+        else:
+            anime_id = nombre_anime[0]
+            print("El Título que desea agregar ya existe!")
+            for fila in nombre_anime:
+                print(f"ID: {fila[0]}, Título: {fila[1]}, Año: {fila[2]}")
         # Verificar si el género ya existe
         cursor.execute("SELECT id_genero FROM genero WHERE nombre = %s", (nombre_genero,))
         genero = cursor.fetchone()
@@ -110,13 +118,11 @@ def agregar_anime(nombre_anime, nombre_genero, nombre_estudio, anio_lanzamiento,
                        (contenido_id, capitulos, estudio_id, estado_id))
         connection.commit()
 
-        print("Anime agregado exitosamente.")
         return True
 
     except Error as e:
         # Revertir transacción en caso de error
         connection.rollback()
-        print(f"Error al agregar el anime: {e}")
         return False
 
     finally:
@@ -126,15 +132,13 @@ def agregar_anime(nombre_anime, nombre_genero, nombre_estudio, anio_lanzamiento,
 # Función principal para ingresar datos del anime
 def añadir_anime_data():
     nombre_anime = input("Nombre del anime: ")
-    nombre_genero = input("genero: ")
+    nombre_genero = input("Género: ")
     nombre_estudio = input("Estudio de animación: ")
-    anio_lanzamiento = input("año de lanzamiento: ")
+    anio_lanzamiento = input("Año de lanzamiento: ")
     capitulos = input("Episodios: ")
     estado = input("Estado: ")
     
-
     if agregar_anime(nombre_anime, nombre_genero, nombre_estudio, anio_lanzamiento, capitulos, estado):
         print("Proceso completado.")
     else:
         print("Error en el proceso.")
-
